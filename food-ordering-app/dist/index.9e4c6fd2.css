@@ -22,7 +22,7 @@
 }
 
 .search {
-  padding: 20px;
+  padding: 20px 10px;
 }
 
 .res-container {
@@ -63,5 +63,13 @@
   width: 300px;
   height: 400px;
   margin: 20px;
+}
+
+.search {
+  display: flex;
+}
+
+.filter-btn {
+  margin-left: 10px;
 }
 /*# sourceMappingURL=index.9e4c6fd2.css.map */

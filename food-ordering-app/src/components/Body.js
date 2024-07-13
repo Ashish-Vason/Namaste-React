@@ -5,6 +5,8 @@ import ShimmerUI from "./ShimmerUI";
 
 const Body = () => {
     const [restaurantData, setRestaurantData] = useState([]);
+    const [resInputValue, setResInputValue] = useState("");
+    const [fiteredRestaurant, setFiteredRestaurant] = useState([]);
     useEffect(() => {
         fetchData()
     },[])
@@ -15,6 +17,14 @@ const Body = () => {
         console.log(json.data)
 
         setRestaurantData(json?.data?.success?.cards[1]?.card?.card?.gridElements?.infoWithStyle.restaurants)
+        setFiteredRestaurant(json?.data?.success?.cards[1]?.card?.card?.gridElements?.infoWithStyle.restaurants)
+    }
+
+    const handleSearch = () => {
+      const filteredData =   restaurantData.filter((resData) => (
+        resData.info.name.toLowerCase().includes(resInputValue.toLowerCase())
+        ))
+        setFiteredRestaurant(filteredData);
     }
 
 
@@ -26,17 +36,21 @@ const Body = () => {
     return (
         <div className='body-container'>
             <div className='search'>
-                Search
-            </div>
-            <button className="filter-btn" onClick={() => {
+                <input type="search" value={resInputValue} placeholder="Search here" className="search-input" onChange={(e) => (
+                    setResInputValue(e.target.value)                 
+                )} />
+                <button className="search-button" onClick={handleSearch}>Search</button>
+                <button className="filter-btn" onClick={() => {
                const filteredData =  restaurantData.filter((restaurant => (
                     restaurant.info.avgRating > 4.3
                 )))
                 console.log(filteredData)
-                setRestaurantData(filteredData)
+                setFiteredRestaurant(filteredData)
             }}>Top Rated Restaurants</button>
+            </div>
+            
             <div className='res-container'>
-                {restaurantData.map((restaurant) => (
+                {fiteredRestaurant.map((restaurant) => (
                     <RestaurantCard key = {restaurant.info.id} resData = {restaurant} />
                 ))}
             </div>
