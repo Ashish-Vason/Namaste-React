@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react'
 import ShimmerUI from './ShimmerUI';
 import { useParams } from 'react-router-dom';
+import useRestaurantMenu from '../utils/useRestaurantMenu';
+import RestaurantCategory from './RestaurtCategory';
+import { useState } from 'react';
 
 // selected res Name - data.cards[2].card.card.info.name
 
@@ -9,40 +11,67 @@ import { useParams } from 'react-router-dom';
 // areaName: data.cards[2].card.card.info.areaName
 
 const RestaurantMenu = () => {
-    const [restaurant, setRestaurant] = useState('');
-    const {resId} = useParams();
-    console.log(resId);
-    const fetchData = async () => {
-        const data = await fetch(`https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=21.99740&lng=79.00110&restaurantId=${resId}`)
-    
-        const json = await data.json();
-        // console.log(json.data.cards[2].card.card.info.name);
-        setRestaurant(json);
-    
-    
-    }
-    useEffect(() => {
-        fetchData();
-    
-    }, [])
-    if(!restaurant) {
-        return <ShimmerUI />
-    }
-    const {name, cuisines, costForTwoMessage, avgRating, totalRatingsString, feeDetails} = restaurant.data.cards[2].card.card.info;
-    const {title} = restaurant.data.cards[4].groupedCard.cardGroupMap.REGULAR.cards[1].card.card;
-    const {itemCards} = restaurant.data.cards[4].groupedCard.cardGroupMap.REGULAR.cards[1].card.card;
-    const {price, ratings} = restaurant.data.cards[4].groupedCard.cardGroupMap.REGULAR.cards[1].card.card.itemCards[1].card.info;
-    
-    return (
-        <div>
-            <div className='main-restaurant'>
-                <h1>{name}</h1>
-                <h2>{avgRating}({totalRatingsString})</h2>
-                <h2>{costForTwoMessage}</h2>
-                <h2>{cuisines.join(", ")}</h2>
-                <h3>{feeDetails.message}</h3>
-            </div>
-            <div className='restaurant-menu'>
+  const { resId } = useParams();
+  console.log(resId);
+  const [showIndex, setShowIndex] = useState(null);
+  const restaurant = useRestaurantMenu(resId);
+  if (!restaurant) {
+    return <ShimmerUI />;
+  }
+  const {
+    name,
+    cuisines,
+    costForTwoMessage,
+    avgRating,
+    totalRatingsString,
+    feeDetails,
+  } = restaurant.data.cards[2].card.card.info;
+  const { title } =
+    restaurant.data.cards[4].groupedCard.cardGroupMap.REGULAR.cards[1].card
+      .card;
+
+  console.log(
+    restaurant.data.cards[4].groupedCard.cardGroupMap.REGULAR.cards,
+    'itemCards'
+  );
+
+  const categories =
+    restaurant.data.cards[4].groupedCard.cardGroupMap.REGULAR.cards.filter(
+      (item) =>
+        item.card.card['@type'] ==
+        'type.googleapis.com/swiggy.presentation.food.v2.ItemCategory'
+    );
+
+  console.log(categories);
+
+  return (
+    <div>
+      <div className="main-restaurant text-center">
+        <h1 className="font-bold my-5 text-2xl">{name}</h1>
+        <div className="description">
+          <h2 className="font-bold text-md text-gray-400">
+            {cuisines.join(', ')}
+          </h2>
+          <h2 className="font-bold text-md">
+            {avgRating}({totalRatingsString})
+          </h2>
+          <h2 className="font-bold text-md">{costForTwoMessage}</h2>
+          <h3 className="font-bold text-md">{feeDetails.message}</h3>
+        </div>
+      </div>
+      <div className="category-container text-center font-bold text-md">
+        {categories.map((item, index) => (
+          // lifting up the state. Controlled component
+          <RestaurantCategory
+            isAccOpen={index == showIndex ? true : false}
+            key={item.card.card.title}
+            data={item}
+            setShowIndex={() => setShowIndex(index)}
+            nullShowIndex={() => setShowIndex(null)}
+          />
+        ))}
+      </div>
+      {/* <div className='restaurant-menu'>
                 <div className='functional-btn'>
                     <button className="bestsellers">
                         Bestsellers
@@ -53,7 +82,7 @@ const RestaurantMenu = () => {
                     <h1 className='menu' style={{alignItems: 'center'}}>Menu</h1>
                     <h2>{title}</h2>
                     {itemCards.map((itemCard) => (
-                        <ul>
+                        <ul key={itemCard.card.info.id}>
                             <li>{itemCard.card.info.name} - <span>₹{itemCard.card.info.price/100}</span>
                             <div>
                                 { itemCard.card.info.ratings.aggregatedRating.rating && <span>{itemCard.card.info.ratings.aggregatedRating.rating}<span>({itemCard.card.info.ratings.aggregatedRating.ratingCount})</span></span>}
@@ -65,10 +94,9 @@ const RestaurantMenu = () => {
                     
                     
                 </div>
-            </div>
-            
-        </div>
-    )
-}
+            </div> */}
+    </div>
+  );
+};
 
 export default RestaurantMenu;
