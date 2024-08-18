@@ -23,7 +23,7 @@ const Cart = () => {
     };
 
     const response = await fetch(
-      `http://localhost:3000/create-checkout-session`,
+      `https://namaste-react-50d9.onrender.com/create-checkout-session`,
       {
         method: 'POST',
         headers: headers,
@@ -87,21 +87,23 @@ const Cart = () => {
             <div className="justify-between ml-[20%] w-8/12">
               <ItemListMenu items={cartItems} />
             </div>
-            <div className="w-4/12">
-              <h1 className="text-center">Checkout Items</h1>
-              <div>
-                <p>items: {cartItems.length} </p>
-                <p>Price: {totalPrice / 100}</p>
+            {cartItems.length > 0 && (
+              <div className="w-4/12">
+                <h1 className="text-center">Checkout Items</h1>
+                <div>
+                  <p>items: {cartItems.length} </p>
+                  <p>Price: {totalPrice / 100}</p>
+                </div>
+                <div className="mt-3">
+                  <button
+                    className="bg-green-600 py-1 px-4 text-white"
+                    onClick={makePayment}
+                  >
+                    Pay Now
+                  </button>
+                </div>
               </div>
-              <div className="mt-3">
-                <button
-                  className="bg-green-600 py-1 px-4 text-white"
-                  onClick={makePayment}
-                >
-                  Pay Now
-                </button>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       ) : (
