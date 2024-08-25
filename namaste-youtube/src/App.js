@@ -2,10 +2,28 @@ import { Provider } from 'react-redux';
 import './App.css';
 import Body from './components/Body';
 import Header from './components/Header';
-import Sidebar from './components/Sidebar';
 import appStore from './utils/appStore';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import VideoContainer from './components/VideoContainer';
+import WatchPage from './components/WatchPage';
 
 function App() {
+  const appRouter = createBrowserRouter([
+    {
+      path: '/',
+      element: <Body />,
+      children: [
+        {
+          path: '/',
+          element: <VideoContainer />,
+        },
+        {
+          path: 'watch',
+          element: <WatchPage />,
+        },
+      ],
+    },
+  ]);
   // YOUTUBE App
   //  --> Header
   //    --> (Hamburger Menu) and logo
@@ -19,7 +37,7 @@ function App() {
     <div className="App">
       <Provider store={appStore}>
         <Header />
-        <Body />
+        <RouterProvider router={appRouter} />
       </Provider>
     </div>
   );

@@ -72,8 +72,8 @@ app.post('/create-checkout-session', async (req, res) => {
     payment_method_types: ['card'],
     line_items: lineItems,
     mode: 'payment',
-    success_url: 'http://localhost:1234',
-    cancel_url: 'http://localhost:1234/res',
+    success_url: 'https://fresh-foodie.vercel.app/success',
+    cancel_url: 'https://fresh-foodie.vercel.app/failure',
     customer_email: 'customer@example.com',
     billing_address_collection: 'required', // To collect billing address
     shipping_address_collection: {

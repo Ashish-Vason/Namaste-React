@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toggleEvent } from '../utils/appSlice';
+import AutoSuggestions from './AutoSuggestions';
 
 const Header = () => {
   const dispatch = useDispatch();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
   return (
     <div className=" mt-3 flex justify-between items-center mx-auto shadow-md py-4">
       <div className="flex w-[20%]">
@@ -13,7 +16,7 @@ const Header = () => {
           alt="hamburger menu"
           className="w-10 mx-2 mr-6"
         />
-        <div className="w-28">
+        <div className="w-28 cursor-pointer">
           <svg
             id="yt-logo-updated-svg_yt4"
             className="external-icon w-10"
@@ -57,15 +60,21 @@ const Header = () => {
           </svg>
         </div>
       </div>
-      <div className="searchBar flex w-[50%]">
+      <div className="relative searchBar flex w-[50%]">
         <input
+          name={searchQuery}
+          placeholder="Search Videos...."
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onFocus={() => setShowSuggestions(true)}
+          onBlur={() => setShowSuggestions(false)}
           type="text"
-          className="border border-gray-200 rounded-l-full p-1 w-[46rem]"
+          className="border border-gray-200 rounded-l-full p-1 w-[46rem] px-5"
         />
         <img
           src="https://static-00.iconduck.com/assets.00/search-icon-1024x1024-hd1pcvqu.png"
           className="w-12 border p-3 rounded-r-full"
         />
+        {showSuggestions && <AutoSuggestions searchQuery={searchQuery} />}
       </div>
       <div className="profile-pic rounded-full">
         <img

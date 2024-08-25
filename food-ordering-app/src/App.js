@@ -12,6 +12,8 @@ import UserContext from './utils/UserContext';
 import appStore from './utils/appStore';
 import { Provider } from 'react-redux';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import SuccessPage from './components/SuccessPage';
+import FailurePage from './components/FailurePage';
 // import About from './components/About'
 // chuncked the code into 2 bundle components for optimization
 const About = lazy(() => import('./components/About'));
@@ -67,6 +69,14 @@ const appLayout = createBrowserRouter([
       {
         path: '/restaurants/:resId',
         element: <RestaurantMenu />,
+      },
+      {
+        path: '/success',
+        element: <SuccessPage />,
+      },
+      {
+        path: '/failure',
+        element: <FailurePage />,
       },
     ],
   },

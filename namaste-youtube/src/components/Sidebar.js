@@ -5,7 +5,7 @@ const Sidebar = () => {
   const toggleBtn = useSelector((store) => store.app.toggleBtn);
   return (
     toggleBtn && (
-      <div className="shadow-md w-[10%] text-center h-[86vh] p-3">
+      <div className="shadow-md w-36 text-center h-[86vh] p-3">
         <ul>
           <li>Home</li>
           <li>Shorts</li>
