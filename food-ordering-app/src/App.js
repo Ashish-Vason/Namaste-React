@@ -11,9 +11,12 @@ import RestaurantMenu from './components/RestaurantMenu';
 import UserContext from './utils/UserContext';
 import appStore from './utils/appStore';
 import { Provider } from 'react-redux';
+<<<<<<< HEAD
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import SuccessPage from './components/SuccessPage';
 import FailurePage from './components/FailurePage';
+=======
+>>>>>>> parent of 832102c (Integration google oauth and stripe payment gateway)
 // import About from './components/About'
 // chuncked the code into 2 bundle components for optimization
 const About = lazy(() => import('./components/About'));
@@ -83,9 +86,4 @@ const appLayout = createBrowserRouter([
 ]);
 
 let root = ReactDOM.createRoot(document.getElementById('root'));
-// root.render(<RouterProvider router={appLayout} />);
-root.render(
-  <GoogleOAuthProvider clientId="889279982780-2d75sftaaeju7ikiro1egfl58ffe5479.apps.googleusercontent.com">
-    <RouterProvider router={appLayout} />
-  </GoogleOAuthProvider>
-);
+root.render(<RouterProvider router={appLayout} />);

@@ -1,13 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import ItemListMenu from './ItemlistMenu';
 import { clearCart } from '../utils/appSlice';
-import { useEffect, useState } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
-import { STRIPE_CLIENT_ID } from '../utils/constants';
 
 const Cart = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((store) => store.cart.items);
+<<<<<<< HEAD
   const isLoggedIn = useSelector((store) => store.login.isLoggedIn);
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -111,6 +109,24 @@ const Cart = () => {
           Please Login First...
         </div>
       )}
+=======
+  return (
+    <div className="m4 p-4 text-center">
+      <div className="w-6/12 flex justify-between mx-auto">
+        <h1 className="text-xl font-bold">Cart</h1>
+        {cartItems.length != 0 && (
+          <button
+            className="bg-gray-500 text-white p-2"
+            onClick={() => dispatch(clearCart())}
+          >
+            Clear Cart
+          </button>
+        )}
+      </div>
+      <div className="w-6/12 mx-auto">
+        <ItemListMenu items={cartItems} />
+      </div>
+>>>>>>> parent of 832102c (Integration google oauth and stripe payment gateway)
     </div>
   );
 };
